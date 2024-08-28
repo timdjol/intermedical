@@ -42,9 +42,9 @@
                                     <form action="{{ route('admin-categories.destroy', $category) }}" method="post">
                                         <a class="btn btn-warning" href="{{ route('admin-categories.edit', $category)
                                          }}">Редактировать</a>
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger">Удалить</button>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить?')">Удалить</button>
                                     </form>
                                 </td>
                             </tr>

@@ -30,6 +30,13 @@
                         @isset($admin_category)
                             @method('PUT')
                         @endisset
+                            <input type="hidden" name="user_id" value="{{ \Illuminate\Support\Facades\Auth::id() }}">
+                            <input type="hidden" name="user_ip" value="{{ request()->getClientIp() }}">
+                            @isset($admin_category)
+                            <input type="hidden" name="old_title" value="{{ $admin_category->title }}">
+                            @else
+                                <input type="hidden" name="title_event" value="Создана категория">
+                            @endif
                         @error('title')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror

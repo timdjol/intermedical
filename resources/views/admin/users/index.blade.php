@@ -1,4 +1,4 @@
-@extends('auth.layouts.master')
+@extends('admin.layouts.master')
 
 @section('title', 'Пользователи')
 
@@ -8,7 +8,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    @include('auth.layouts.sidebar')
+                    @include('admin.layouts.sidebar')
                 </div>
                 <div class="col-md-9">
                     @if(session()->has('success'))
@@ -17,38 +17,42 @@
                     @if(session()->has('warning'))
                         <p class="alert alert-warning">{{ session()->get('warning') }}</p>
                     @endif
-                    <div class="row">
+                    <div class="row aic">
                         <div class="col-md-7">
                             <h2>Пользователи</h2>
                         </div>
                         <div class="col-md-5">
-                            <a href="{{ route('users.create') }}" class="btn add">Добавить</a>
+                            <a href="{{ route('admin-users.create') }}" class="btn btn-success">Добавить</a>
                         </div>
                     </div>
                     <table class="table">
                         <tbody>
                         <tr>
+                            <th>ID</th>
                             <th>ФИО</th>
-                            <th>Телефон</th>
                             <th>Email</th>
+                            <th>Роль</th>
                             <th>Действия</th>
                         </tr>
                         @foreach($users as $user)
                             <tr>
+                                <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
-                                <td><a href="tel:{{ $user->phone }}">{{ $user->phone }}</a></td>
                                 <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
                                 <td>
-                                    <form action="{{ route('users.destroy', $user) }}" method="post">
-                                        <ul>
-                                            <li><a class="btn view" href="{{ route('users.show', $user)
-                                            }}">Открыть</a></li>
-                                            <li><a class="btn edit" href="{{ route('users.edit', $user)
-                                            }}">Редактировать</a></li>
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn delete">Удалить</button>
-                                        </ul>
+                                    @if($user->role == 'admin')
+                                        Администратор
+                                    @else
+                                        Пользователь
+                                    @endif
+                                </td>
+                                <td>
+                                    <form action="{{ route('admin-users.destroy', $user) }}" method="post">
+                                        <a class="btn btn-warning" href="{{ route('admin-users.edit', $user)
+                                            }}">Редактировать</a>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить?')">Удалить</button>
                                     </form>
                                 </td>
                             </tr>

@@ -21,20 +21,20 @@
                     <div class="row justify-content-center">
                         <div class="col-md-4">
                             <div class="dashboard-item">
-                                <div class="num">1</div>
-                                <h5>Количество <br> заказов</h5>
+                                <div class="num">{{ count($posts) }}</div>
+                                <h5>Количество <br> записей</h5>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="dashboard-item">
-                                <div class="num">1</div>
+                                <div class="num">{{ count($categories) }}</div>
+                                <h5>Количество <br> категорий</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="dashboard-item">
+                                <div class="num">{{ count($users) }}</div>
                                 <h5>Количество <br> пользователей</h5>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="dashboard-item">
-                                <div class="num">1</div>
-                                <h5>Количество <br> авто</h5>
                             </div>
                         </div>
 

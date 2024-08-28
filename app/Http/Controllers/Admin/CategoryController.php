@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
@@ -34,9 +36,14 @@ class CategoryController extends Controller
     {
         $request['code'] = Str::slug($request->title);
         $params = $request->all();
-        Category::create($params);
+        $category = Category::create($params);
 
-        session()->flash('success', 'Категория добавлена ' . $request->title);
+        unset($params['title_event']);
+        $title_event = 'Добавлена категория ' . $category->title;
+        $params['title_event'] = $title_event;
+        Event::create($params);
+
+        session()->flash('success', 'Добавлена категория ' . $request->title);
 
         return redirect()->route('admin-categories.index');
     }
@@ -55,7 +62,12 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, Category $admin_category)
     {
         $params = $request->all();
+
+        unset($params['title_event']);
+        $title_event = 'Изменена категория ' . $params["old_title"] . ' на ' . $request->title;
+        $params['title_event'] = $title_event;
         $admin_category->update($params);
+        Event::create($params);
 
         session()->flash('success', 'Категория ' . $request->title . ' обновлена');
         return redirect()->route('admin-categories.index');
@@ -67,6 +79,13 @@ class CategoryController extends Controller
     public function destroy(Category $admin_category)
     {
         $admin_category->delete();
+        Event::create(
+            [
+                'user_ip' => request()->getClientIp(),
+                'user_id' => Auth::id(),
+                'title_event' => 'Удалена категория ' . $admin_category->title,
+            ]
+        );
         session()->flash('success', 'Категория ' . $admin_category->title . ' удалена');
         return redirect()->route('admin-categories.index');
     }

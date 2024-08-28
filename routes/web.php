@@ -33,7 +33,8 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::resource('admin-categories','App\Http\Controllers\Admin\CategoryController');
     Route::resource('admin-posts','App\Http\Controllers\Admin\PostController');
-
+    Route::resource('admin-users','App\Http\Controllers\Admin\UserController');
+    Route::resource('admin-events','App\Http\Controllers\Admin\EventController');
 });
 
 Route::middleware(['auth', 'role:agent'])->group(function(){

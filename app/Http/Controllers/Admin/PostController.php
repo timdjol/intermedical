@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Category;
+use App\Models\Event;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -33,34 +35,36 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PostRequest $request, Post $post)
+    public function store(PostRequest $request)
     {
         $request['code'] = Str::slug($request->title);
         $params = $request->all();
+        $post = Post::create($params);
 
-        unset($params['image']);
-        if($request->has('image')){
-            if($post->image != null) {
-                Storage::delete($post->image);
-            }
-            $params['image'] = $request->file('image')->store('posts');
-        }
+        unset($params['title_event']);
+        $title_event = 'Добавлена книга ' . $post->title;
+        $params['title_event'] = $title_event;
+        Event::create($params);
 
-        Post::create($params);
-
-        session()->flash('success', 'Библиотека ' . $request->title . ' добавлена');
+        session()->flash('success', 'Книга ' . $request->title . ' добавлена');
         return redirect()->route('admin-posts.index');
     }
 
-    public function show(Post $post)
+    public function show(Post $admin_post)
     {
-        return view('admin.products.show', compact('post'));
+        Event::create(
+            [
+                'user_ip' => request()->getClientIp(),
+                'user_id' => Auth::id(),
+                'title_event' => 'Просмотрена книга ' . $admin_post->title,
+            ]
+        );
+        return view('admin.posts.show', compact('admin_post'));
     }
 
     public function edit(Post $admin_post)
     {
         $categories = Category::get();
-        session()->flash('success', 'Библиотека ' . $admin_post->title . ' добавлена');
         return view('admin.posts.form', compact('admin_post', 'categories'));
     }
 
@@ -78,8 +82,14 @@ class PostController extends Controller
             $params['image'] = $path;
         }
 
+
+        unset($params['title_event']);
+        $title_event = 'Изменена книга ' . $params["old_title"] . ' на ' . $request->title;
+        $params['title_event'] = $title_event;
         $admin_post->update($params);
-        session()->flash('success', 'Продукция ' . $admin_post->title . ' обновлена');
+        Event::create($params);
+
+        session()->flash('success', 'Книга ' . $admin_post->title . ' обновлена');
         return redirect()->route('admin-posts.index');
     }
 
@@ -87,7 +97,14 @@ class PostController extends Controller
     public function destroy(Post $admin_post)
     {
         $admin_post->delete();
-        session()->flash('success', 'Библиотека ' . $admin_post->title . ' удалена');
+        Event::create(
+            [
+                'user_ip' => request()->getClientIp(),
+                'user_id' => Auth::id(),
+                'title_event' => 'Удалена книга ' . $admin_post->title,
+            ]
+        );
+        session()->flash('success', 'Книга ' . $admin_post->title . ' удалена');
         return redirect()->route('admin-posts.index');
     }
 

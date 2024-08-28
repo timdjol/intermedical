@@ -44,11 +44,13 @@
                                 <td>{{ $post->category->title }}</td>
                                 <td>
                                     <form action="{{ route('admin-posts.destroy', $post) }}" method="post">
+                                        <a href="{{ route('admin-posts.show', $post) }}" class="btn
+                                        btn-primary">Открыть</a>
                                         <a class="btn btn-warning" href="{{ route('admin-posts.edit', $post)
                                             }}">Редактировать</a>
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger">Удалить</button>
+                                        <button class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить?')">Удалить</button>
                                     </form>
                                 </td>
                             </tr>

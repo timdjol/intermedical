@@ -30,6 +30,13 @@
                         @isset($admin_post)
                             @method('PUT')
                         @endisset
+                        <input type="hidden" name="user_id" value="{{ \Illuminate\Support\Facades\Auth::id() }}">
+                        <input type="hidden" name="user_ip" value="{{ request()->getClientIp() }}">
+                        @isset($admin_post)
+                            <input type="hidden" name="old_title" value="{{ $admin_post->title }}">
+                        @else
+                            <input type="hidden" name="title_event" value="Создана книга">
+                        @endif
                         @error('title')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
@@ -95,5 +102,13 @@
             </div>
         </div>
     </div>
+
+    <style>
+        img {
+            max-width: 300px;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
 
 @endsection

@@ -1,6 +1,6 @@
-@extends('auth.layouts.master')
+@extends('admin.layouts.master')
 
-@isset($user)
+@isset($admin_user)
     @section('title', 'Редактировать пользователя')
 @else
     @section('title', 'Добавить пользователя')
@@ -12,118 +12,64 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    @include('auth.layouts.sidebar')
+                    @include('admin.layouts.sidebar')
                 </div>
                 <div class="col-md-9">
-                    @isset($user)
+                    @isset($admin_user)
                         <h1>Редактировать пользователя</h1>
                     @else
                         <h1>Добавить пользователя</h1>
                     @endisset
                     <form method="post"
-                          @isset($user)
-                              action="{{ route('users.update', $user) }}"
+                          @isset($admin_user)
+                              action="{{ route('admin-users.update', $admin_user) }}"
                           @else
-                              action="{{ route('users.store') }}"
+                              action="{{ route('admin-users.store') }}"
                             @endisset
                     >
-                        @isset($user)
+                        @isset($admin_user)
                             @method('PUT')
                         @endisset
-                        @include('auth.layouts.error', ['fieldname' => 'name'])
+                        @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                         <div class="form-group">
                             <label for="">ФИО</label>
-                            <input type="text" name="name" value="{{ old('name', isset($user) ? $user->name : null) }}">
+                            <input type="text" name="name"
+                                   value="{{ old('name', isset($admin_user) ? $admin_user->name : null) }}">
                         </div>
-                        @include('auth.layouts.error', ['fieldname' => 'value'])
+
                         <div class="form-group">
-                            <label for="">Номер телефона</label>
-                            <input type="text" name="phone" value="{{ old('value', isset($user) ? $user->phone :
-                             null) }}">
-                        </div>
-                        @include('auth.layouts.error', ['fieldname' => 'email'])
-                        <div class="form-group">
+                            @error('email')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <label for="">Email</label>
-                            <input type="text" name="email" value="{{ old('value', isset($user) ? $user->email :
+                            <input type="text" name="email" value="{{ old('value', isset($admin_user) ? $admin_user->email :
                              null) }}">
                         </div>
-                        @include('auth.layouts.error', ['fieldname' => 'country'])
+
                         <div class="form-group">
-                            <label for="">Страна</label>
-                            <select id="country_id" name="country" class="form-control">
-                                @foreach ($countries as $country)
-                                    <option value="{{$country->id}}"
-                                    @isset($user->country)
-                                        @if($user->country == $country->id)
-                                            selected
-                                            @endif
-                                        @endisset
-                                    >{{$country->title}}</option>
-                                @endforeach
+                            @error('role')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                            <label for="">Роль пользователя</label>
+                            <select name="role">
+                                <option value="{{ $admin_user->role }}">{{ $admin_user->role }}</option>
+                                <option value="admin">Администратор</option>
+                                <option value="user">Пользователь</option>
                             </select>
                         </div>
-                        @include('auth.layouts.error', ['fieldname' => 'region'])
                         <div class="form-group">
-                            <label for="">Регион</label>
-                            <select name="region" id="region_id">
-                                @isset($user->region)
-                                    <option value="{{ $user->region }}">{{ $user->region }}</option>
-                                @endisset
-                            </select>
-                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                            <script>
-                                $(document).ready(function () {
-                                    $('#country_id').on('change', function () {
-                                        let idCountry = this.value;
-                                        $("#region_id").html('');
-                                        $.ajax({
-                                            url: "{{url('api/fetch-states')}}",
-                                            type: "POST",
-                                            data: {
-                                                country_id: idCountry,
-                                                _token: '{{csrf_token()}}'
-                                            },
-                                            dataType: 'json',
-                                            success: function (result) {
-                                                $('#region_id').html('<option value="">Выберите область</option>');
-                                                $.each(result.states, function (key, value) {
-                                                    $("#region_id").append('<option value="' + value.title + '">' +
-                                                        value
-                                                        .title + '</option>');
-                                                });
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
-                        </div>
-                        @include('auth.layouts.error', ['fieldname' => 'address'])
-                        <div class="form-group">
-                            <label for="">Адрес</label>
-                            <input type="text" name="address" value="{{ old('description', isset($user) ?
-                                $user->address : null) }}">
-                        </div>
-                        @include('auth.layouts.error', ['fieldname' => 'passport_inn'])
-                        <div class="form-group">
-                            <label for="">ИНН</label>
-                            <input type="text" name="passport_inn" value="{{ old('passport_inn', isset($user) ?
-                                $user->passport_inn : null) }}">
-                        </div>
-                        @include('auth.layouts.error', ['fieldname' => 'passport_id'])
-                        <div class="form-group">
-                            <label for="">ID Паспорт</label>
-                            <input type="text" name="passport_id" value="{{ old('passport_id', isset($user) ?
-                                $user->passport_id : null) }}">
-                        </div>
-                        @include('auth.layouts.error', ['fieldname' => 'password'])
-                        <div class="form-group">
+                            @error('password')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <label for="">Пароль</label>
                             <input type="password" name="password"
-                                   value="{{ old('password', isset($user) ? $user->password : null) }}">
+                                   value="{{ old('password', isset($admin_user) ? $admin_user->password : null) }}">
                         </div>
                         @csrf
-                        <button class="more">Отправить</button>
-                        <a href="{{url()->previous()}}" class="btn delete cancel">Отмена</a>
+                        <button class="btn btn-primary">Отправить</button>
+                        <a href="{{url()->previous()}}" class="btn btn-danger">Отмена</a>
                     </form>
                 </div>
             </div>
