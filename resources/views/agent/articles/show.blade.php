@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Книга ' . $admin_post->title)
+@section('title', 'Книга ' . $agent_post->title)
 
 @section('content')
 
@@ -9,11 +9,11 @@
             <div class="row">
                 <div class="col-md-3">
                     @include('admin.layouts.sidebar')
-                    <img src="{{ Storage::url($admin_post->image) }}" alt="">
+                    <img src="{{ Storage::url($agent_post->image) }}" alt="">
                 </div>
                 <div class="col-md-9">
-                    <h1>{{ $admin_post->title }}</h1>
-                    {!! $admin_post->description !!}
+                    <h1>{{ $agent_post->title }}</h1>
+                    {!! $agent_post->description !!}
                 </div>
             </div>
         </div>

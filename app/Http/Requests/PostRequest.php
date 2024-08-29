@@ -26,7 +26,7 @@ class PostRequest extends FormRequest
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:5',
             'category_id' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp,avif|max:2048',
+            'image' => 'image',
         ];
 //        if($this->route()->named('products.update')){
 //            $rules['code'] .= ',' . $this->route()->parameter('product')->id;
@@ -40,7 +40,7 @@ class PostRequest extends FormRequest
             'required'=> 'Поле :attribute обязательно для ввода',
             'min' => 'Поле :attribute должно иметь минимум :min символов',
             'image' => 'Загрузите изображение',
-            'mimes' => 'Изображение должно быть формата jpeg,png,jpg,gif,svg,webp',
+           //'mimes' => 'Изображение должно быть формата jpeg,png,jpg,gif,svg,webp',
             'max' => 'Размер изображения не должно превышать 2Мб',
         ];
     }

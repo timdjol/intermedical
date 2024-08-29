@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Post;
 
 class AgentController extends Controller
 {
-    public function dashboard()
+    public function console()
     {
-        return view('agent.dashboard');
+        $posts = Post::all();
+        $categories = Category::all();
+        return view('agent.console', compact('posts', 'categories'));
     }
 }

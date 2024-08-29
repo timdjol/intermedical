@@ -31,14 +31,16 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function(){
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::resource('admin-categories','App\Http\Controllers\Admin\CategoryController');
-    Route::resource('admin-posts','App\Http\Controllers\Admin\PostController');
+    Route::resource('/admin/admin-categories','App\Http\Controllers\Admin\CategoryController');
+    Route::resource('/admin/admin-posts','App\Http\Controllers\Admin\PostController');
     Route::resource('admin-users','App\Http\Controllers\Admin\UserController');
     Route::resource('admin-events','App\Http\Controllers\Admin\EventController');
 });
 
 Route::middleware(['auth', 'role:agent'])->group(function(){
-    Route::get('/agent/dashboard', [AgentController::class, 'dashboard'])->name('agent.dashboard');
+    Route::get('/agent/console', [AgentController::class, 'console'])->name('agent.console');
+    Route::resource('/agent-posts','App\Http\Controllers\Agent\PostController');
+    Route::resource('/agent-articles','App\Http\Controllers\Agent\ArticleController');
 });
 
 

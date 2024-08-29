@@ -54,9 +54,11 @@
                             @enderror
                             <label for="">Роль пользователя</label>
                             <select name="role">
-                                <option value="{{ $admin_user->role }}">{{ $admin_user->role }}</option>
+                                @isset($admin_user)
+                                    <option value="{{ $admin_user->role }}">{{ $admin_user->role }}</option>
+                                @endisset
+                                <option value="agent">Пользователь</option>
                                 <option value="admin">Администратор</option>
-                                <option value="user">Пользователь</option>
                             </select>
                         </div>
                         <div class="form-group">

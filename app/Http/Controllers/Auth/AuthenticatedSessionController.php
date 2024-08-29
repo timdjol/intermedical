@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Event;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        return view('index');
     }
 
     /**
@@ -29,13 +30,23 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $url = "dashboard";
+
 
         if ($request->user()->role == "admin") {
             $url = "admin/dashboard";
-        } else if($request->user()->role == "agent"){
-            $url = "agent/dashboard";
+        } else {
+            $url = "agent/console";
         }
+
+        //$url = "dashboard";
+
+        Event::create(
+            [
+                'user_ip' => request()->getClientIp(),
+                'user_id' => Auth::id(),
+                'title_event' => 'Выполнен вход в систему',
+            ]
+        );
 
         return redirect()->intended($url);
     }

@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Библиотека')
+@section('title', 'Мои записи')
 
 @section('content')
 
@@ -22,7 +22,7 @@
                             <h1>Библиотека</h1>
                         </div>
                         <div class="col-md-5">
-                            <a href="{{ route('admin-posts.create') }}" class="btn btn-success">Добавить</a>
+                            <a href="{{ route('agent-posts.create') }}" class="btn btn-success">Добавить</a>
                         </div>
                     </div>
                     <table class="table">
@@ -32,8 +32,6 @@
                             <th>Изображение</th>
                             <th>Название</th>
                             <th>Категория</th>
-                            <th>Автор</th>
-                            <th>Статус</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -44,25 +42,15 @@
                                 <td><img src="{{ Storage::url($post->image) }}" alt=""></td>
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->category->title }}</td>
-                                <td>{{ $post->user->name }}</td>
                                 <td>
-                                    @if($post->status == 1)
-                                        Включен
-                                    @else
-                                        Отключен
-                                    @endif
-                                </td>
-                                <td>
-                                    <form action="{{ route('admin-posts.destroy', $post) }}" method="post">
-                                        <a href="{{ route('admin-posts.show', $post) }}" class="btn
+                                    <form action="{{ route('agent-posts.destroy', $post) }}" method="post">
+                                        <a href="{{ route('agent-posts.show', $post) }}" class="btn
                                         btn-primary">Открыть</a>
-                                        <a class="btn btn-warning" href="{{ route('admin-posts.edit', $post)
+                                        <a class="btn btn-warning" href="{{ route('agent-posts.edit', $post)
                                             }}">Редактировать</a>
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger"
-                                                onclick="return confirm('Вы уверены, что хотите удалить?')">Удалить
-                                        </button>
+                                        <button class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить?')">Удалить</button>
                                     </form>
                                 </td>
                             </tr>

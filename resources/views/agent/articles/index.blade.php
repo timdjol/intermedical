@@ -18,11 +18,8 @@
                         <p class="alert alert-warning">{{ session()->get('warning') }}</p>
                     @endif
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-12">
                             <h1>Библиотека</h1>
-                        </div>
-                        <div class="col-md-5">
-                            <a href="{{ route('admin-posts.create') }}" class="btn btn-success">Добавить</a>
                         </div>
                     </div>
                     <table class="table">
@@ -53,17 +50,8 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <form action="{{ route('admin-posts.destroy', $post) }}" method="post">
-                                        <a href="{{ route('admin-posts.show', $post) }}" class="btn
+                                    <a href="{{ route('agent-posts.show', $post) }}" class="btn
                                         btn-primary">Открыть</a>
-                                        <a class="btn btn-warning" href="{{ route('admin-posts.edit', $post)
-                                            }}">Редактировать</a>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger"
-                                                onclick="return confirm('Вы уверены, что хотите удалить?')">Удалить
-                                        </button>
-                                    </form>
                                 </td>
                             </tr>
                         @endforeach
