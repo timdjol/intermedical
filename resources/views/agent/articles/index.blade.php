@@ -41,7 +41,7 @@
                                 <td><img src="{{ Storage::url($post->image) }}" alt=""></td>
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->category->title }}</td>
-                                <td>{{ $post->user->name }}</td>
+                                <td>{{ $post->user->name ?? 'Админстратор' }}</td>
                                 <td>
                                     @if($post->status == 1)
                                         Включен

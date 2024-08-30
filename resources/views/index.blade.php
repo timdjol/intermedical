@@ -13,23 +13,21 @@
                         @csrf
 
                         <!-- Email Address -->
-                        <div>
-                            <x-input-label for="email" :value="__('Email')"/>
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
-                                          :value="old('email')" required autofocus autocomplete="username"/>
-                            <x-input-error :messages="$errors->get('email')" class="mt-2"/>
+                        <div class="form-group">
+                            @error('email')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                            <label for="">Email</label>
+                            <input type="email" name="email" value="{{ old('email') }}">
                         </div>
 
                         <!-- Password -->
-                        <div class="mt-4">
+                        <div class="form-group">
+                            @error('password')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <label for="">Пароль</label>
-
-                            <x-text-input id="password" class="block mt-1 w-full"
-                                          type="password"
-                                          name="password"
-                                          required autocomplete="current-password"/>
-
-                            <x-input-error :messages="$errors->get('password')" class="mt-2"/>
+                            <input type="password" name="password" value="{{ old('password') }}" autocomplete="current-password">
                         </div>
 
 

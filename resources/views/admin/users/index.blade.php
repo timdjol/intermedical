@@ -28,7 +28,6 @@
                     <table class="table">
                         <tbody>
                         <tr>
-                            <th>ID</th>
                             <th>ФИО</th>
                             <th>Email</th>
                             <th>Роль</th>
@@ -36,7 +35,6 @@
                         </tr>
                         @foreach($users as $user)
                             <tr>
-                                <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
                                 <td>

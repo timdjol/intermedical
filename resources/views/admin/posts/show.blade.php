@@ -10,6 +10,7 @@
                 <div class="col-md-3">
                     @include('admin.layouts.sidebar')
                     <img src="{{ Storage::url($admin_post->image) }}" alt="">
+                    <h4>{{ $admin_post->category->title }}</h4>
                 </div>
                 <div class="col-md-9">
                     <h1>{{ $admin_post->title }}</h1>
