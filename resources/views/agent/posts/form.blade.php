@@ -49,24 +49,25 @@
                              null) }}">
                         </div>
                         <div class="form-group">
-                            @error('category_id')
+                            @error('categories_id')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                             <label for="">Выберите категорию</label>
-                            <select name="category_id">
-                                <option value="">Выбрать</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                            @if(old('category_id') == $category->id)
-                                                selected
-                                            @endif
-                                            @isset($agent_post)
-                                                @if($agent_post->category_id == $category->id)
-                                                    selected
-                                            @endif
-                                            @endisset
-                                    >{{ $category->title }}</option>
-                                @endforeach
+                            <select class="selectpicker" id="category" multiple name="categories_id[]"
+                                    data-live-search="true" placeholder="Не выбрано">
+                                @isset($admin_post)
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                                @if($admin_post->categories->contains($category->id)) selected @endif
+                                        >{{ $category->title }}</option>
+                                    @endforeach
+                                @else
+                                    <option value="">Выбрать</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ (collect(old('categories_id'))->contains
+                                        ($category->id)) ? 'selected': '' }}>{{ $category->title }}</option>
+                                    @endforeach
+                                @endisset
                             </select>
                         </div>
                         <div class="form-group">
@@ -128,6 +129,9 @@
             max-width: 300px;
             display: block;
             margin-bottom: 10px;
+        }
+        form select {
+            height: auto;
         }
     </style>
 

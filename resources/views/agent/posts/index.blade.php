@@ -41,7 +41,15 @@
                                 <td>{{ $post->id }}</td>
                                 <td><img src="{{ Storage::url($post->image) }}" alt=""></td>
                                 <td>{{ $post->title }}</td>
-                                <td>{{ $post->category->title }}</td>
+                                <td>
+                                    @foreach($post->categories as $category)
+                                        @if($loop->last)
+                                            {{ $category->title }}
+                                        @else
+                                            {{ $category->title }},
+                                        @endif
+                                    @endforeach
+                                </td>
                                 <td>
                                     <form action="{{ route('agent-posts.destroy', $post) }}" method="post">
                                         <a href="{{ route('agent-posts.show', $post) }}" class="btn

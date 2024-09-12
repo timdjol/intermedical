@@ -111,3 +111,23 @@ form input, form select{
     font-size: 14px;
     margin: 2px;
 }
+.documents h1{
+    margin-bottom: 20px;
+}
+
+.documents img{
+    width: 30px;
+    margin-right: 5px;
+    position: relative;
+    top: -2px
+}
+.documents ul{
+    margin-top: 5px;
+}
+.documents ul li{
+    display: block;
+    margin-bottom: 10px;
+}
+.documents ul li a{
+    color: #333;
+}

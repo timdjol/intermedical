@@ -3,19 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Post extends Model
+class Document extends Model
 {
-    use SoftDeletes;
 
     protected $fillable = [
         'code',
         'title',
-        //'category_id[]',
         'user_id',
-        'description',
-        'image',
+        'path',
         'status'
     ];
 
@@ -26,7 +22,7 @@ class Post extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_post', 'post_id', 'category_id');
+        return $this->belongsToMany(Category::class, 'category_document', 'document_id', 'category_id');
     }
 
     public function user()

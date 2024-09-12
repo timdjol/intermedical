@@ -26,7 +26,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.form');
+        $categories = Category::with('children')->get();
+        return view('admin.categories.form', compact('categories'));
     }
 
     /**
@@ -53,7 +54,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $admin_category)
     {
-        return view('admin.categories.form', compact('admin_category'));
+        $categories = Category::all();
+        return view('admin.categories.form', compact('admin_category', 'categories'));
     }
 
     /**

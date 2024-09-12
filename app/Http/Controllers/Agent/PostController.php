@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\PostUpdateRequest;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\Post;
@@ -44,6 +45,7 @@ class PostController extends Controller
         $title_event = 'Добавлена книга ' . $post->title;
         $params['title_event'] = $title_event;
         Event::create($params);
+        $post->categories()->attach($request->categories_id);
 
         session()->flash('success', 'Книга ' . $request->title . ' добавлена');
         return redirect()->route('agent-posts.index');
@@ -67,7 +69,7 @@ class PostController extends Controller
         return view('agent.posts.form', compact('agent_post', 'categories'));
     }
 
-    public function update(PostRequest $request, Post $agent_post)
+    public function update(PostUpdateRequest $request, Post $agent_post)
     {
         $request['code'] = Str::slug($request->title);
         $params = $request->all();
@@ -86,6 +88,7 @@ class PostController extends Controller
         $title_event = 'Изменена книга ' . $params["old_title"] . ' на ' . $request->title;
         $params['title_event'] = $title_event;
         $agent_post->update($params);
+        $agent_post->categories()->sync($request->categories_id);
         Event::create($params);
 
         session()->flash('success', 'Книга ' . $agent_post->title . ' обновлена');

@@ -1,9 +1,9 @@
 @extends('admin.layouts.master')
 
-@isset($admin_post)
-    @section('title', 'Редактировать  ' . $admin_post->title)
+@isset($admin_document)
+    @section('title', 'Редактировать  ' . $admin_document->title)
 @else
-    @section('title', 'Добавить книгу')
+    @section('title', 'Добавить документ')
 @endisset
 
 @section('content')
@@ -14,51 +14,52 @@
                 <div class="col-md-3">
                     @include('admin.layouts.sidebar')
                 </div>
-                <div class="col-md-9">
-                    @isset($admin_post)
-                        <h1>Редактировать {{ $admin_post->title }}</h1>
+                <div class="col-md-6">
+                    @isset($admin_document)
+                        <h1>Редактировать {{ $admin_document->title }}</h1>
                     @else
-                        <h1>Добавить книгу</h1>
+                        <h1>Добавить документ</h1>
                     @endisset
                     <form method="post" enctype="multipart/form-data"
-                          @isset($admin_post)
-                              action="{{ route('admin-posts.update', $admin_post) }}"
+                          @isset($admin_document)
+                              action="{{ route('admin-documents.update', $admin_document) }}"
                           @else
-                              action="{{ route('admin-posts.store') }}"
+                              action="{{ route('admin-documents.store') }}"
                             @endisset
                     >
-                        @isset($admin_post)
+                        @isset($admin_document)
                             @method('PUT')
-                            <input type="hidden" name="user_id" value="{{ $admin_post->user_id }}">
+                            <input type="hidden" name="user_id" value="{{ $admin_document->user_id }}">
                         @else
                             <input type="hidden" name="user_id" value="{{ \Illuminate\Support\Facades\Auth::id() }}">
                         @endisset
 
                         <input type="hidden" name="user_ip" value="{{ request()->getClientIp() }}">
-                        @isset($admin_post)
-                            <input type="hidden" name="old_title" value="{{ $admin_post->title }}">
+                        @isset($admin_document)
+                            <input type="hidden" name="old_title" value="{{ $admin_document->title }}">
                         @else
-                            <input type="hidden" name="title_event" value="Создана книга">
+                            <input type="hidden" name="title_event" value="Создан документ">
                         @endif
                         @error('title')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
                         <div class="form-group">
                             <label for="">Заголовок</label>
-                            <input type="text" name="title" value="{{ old('title', isset($admin_post) ? $admin_post->title :
+                            <input type="text" name="title" value="{{ old('title', isset($admin_document) ? $admin_document->title :
                              null) }}">
                         </div>
                         <div class="form-group">
-                            @error('categories_id')
+                            @error('category_id')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                             <label for="">Выберите категорию</label>
                             <select class="selectpicker" id="category" multiple name="categories_id[]"
                                     data-live-search="true" placeholder="Не выбрано">
-                                @isset($admin_post)
+                                @isset($admin_document)
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}"
-                                                @if($admin_post->categories->contains($category->id)) selected @endif
+                                                @if($admin_document->categories->contains($category->id)) selected
+                                                @endif
                                         >{{ $category->title }}</option>
                                     @endforeach
                                 @else
@@ -71,42 +72,21 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            @error('description')
+                            @error('path')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
-                            <label for="">Описание</label>
-                            <textarea name="description" id="editor" rows="6">{{ old('description', isset
-                                ($admin_post) ? $admin_post->description : null) }}</textarea>
-                        </div>
-                        <script src="https://cdn.tiny.cloud/1/yxonqgmruy7kchzsv4uizqanbapq2uta96cs0p4y91ov9iod/tinymce/6/tinymce.min.js"
-                                referrerpolicy="origin"></script>
-                        <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>
-                        <script>
-                            ClassicEditor
-                                .create(document.querySelector('#editor'))
-                                .catch(error => {
-                                    console.error(error);
-                                });
-                        </script>
-                        <div class="form-group">
-                            @error('image')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                            <label for="">Изображение</label>
-                            @isset($admin_post)
-                                <img src="{{ Storage::url($admin_post->image) }}" alt="">
-                            @endisset
-                            <input type="file" name="image">
+                            <label for="">Документ</label>
+                            <input type="file" name="path">
                         </div>
                         <div class="form-group">
                             <label for="">Статус</label>
                             <select name="status" id="">
-                                @isset($admin_post)
-                                    @if($admin_post->status == 1)
-                                        <option value="{{ $admin_post->status }}">Включен</option>
+                                @isset($admin_document)
+                                    @if($admin_document->status == 1)
+                                        <option value="{{ $admin_document->status }}">Включен</option>
                                         <option value="0">Отключен</option>
                                     @else
-                                        <option value="{{ $admin_post->status }}">Отключен</option>
+                                        <option value="{{ $admin_document->status }}">Отключен</option>
                                         <option value="1">Включен</option>
                                     @endif
                                 @else
@@ -119,10 +99,16 @@
                         <button class="btn btn-primary">Отправить</button>
                         <a href="{{ url()->previous() }}" class="btn btn-danger">Отмена</a>
                     </form>
+                        @isset($admin_document)
+                            <iframe src="{{ Storage::url($admin_document->path) }}"
+                                    width="100%"
+                                    height="500px">
+                        @endisset
                 </div>
             </div>
         </div>
     </div>
+
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet"
@@ -132,12 +118,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
 
     <style>
-        img {
-            max-width: 300px;
-            display: block;
-            margin-bottom: 10px;
-        }
-
         form select#category {
             height: auto;
         }

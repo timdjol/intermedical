@@ -40,7 +40,15 @@
                                 <td>{{ $post->id }}</td>
                                 <td><img src="{{ Storage::url($post->image) }}" alt=""></td>
                                 <td>{{ $post->title }}</td>
-                                <td>{{ $post->category->title }}</td>
+                                <td>
+                                    @foreach($post->categories as $category)
+                                        @if($loop->last)
+                                            {{ $category->title }}
+                                        @else
+                                            {{ $category->title }},
+                                        @endif
+                                    @endforeach
+                                </td>
                                 <td>{{ $post->user->name ?? 'Админстратор' }}</td>
                                 <td>
                                     @if($post->status == 1)

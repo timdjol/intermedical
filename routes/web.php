@@ -35,13 +35,15 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
     Route::resource('/admin/admin-posts','App\Http\Controllers\Admin\PostController');
     Route::resource('admin-users','App\Http\Controllers\Admin\UserController');
     Route::resource('admin-events','App\Http\Controllers\Admin\EventController');
+    Route::resource('admin-documents','App\Http\Controllers\Admin\DocumentController');
 });
 
 Route::middleware(['auth', 'role:agent'])->group(function(){
     Route::get('/agent/console', [AgentController::class, 'console'])->name('agent.console');
+    Route::resource('categories','App\Http\Controllers\Agent\CategoryController');
     Route::resource('/agent-posts','App\Http\Controllers\Agent\PostController');
     Route::resource('/agent-articles','App\Http\Controllers\Agent\ArticleController');
+    Route::resource('/agent-documents','App\Http\Controllers\Agent\DocumentController');
 });
-
 
 require __DIR__.'/auth.php';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\PostUpdateRequest;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\Post;
@@ -39,7 +40,13 @@ class PostController extends Controller
     {
         $request['code'] = Str::slug($request->title);
         $params = $request->all();
+        unset($params['image']);
+        if($request->has('image')){
+            $path = $request->file('image')->store('posts');
+            $params['image'] = $path;
+        }
         $post = Post::create($params);
+        $post->categories()->attach($request->categories_id);
 
         unset($params['title_event']);
         $title_event = 'Добавлена книга ' . $post->title;
@@ -68,7 +75,7 @@ class PostController extends Controller
         return view('admin.posts.form', compact('admin_post', 'categories'));
     }
 
-    public function update(PostRequest $request, Post $admin_post)
+    public function update(PostUpdateRequest $request, Post $admin_post)
     {
         $request['code'] = Str::slug($request->title);
         $params = $request->all();
@@ -82,11 +89,11 @@ class PostController extends Controller
             $params['image'] = $path;
         }
 
-
         unset($params['title_event']);
         $title_event = 'Изменена книга ' . $params["old_title"] . ' на ' . $request->title;
         $params['title_event'] = $title_event;
         $admin_post->update($params);
+        $admin_post->categories()->sync($request->categories_id);
         Event::create($params);
 
         session()->flash('success', 'Книга ' . $admin_post->title . ' обновлена');

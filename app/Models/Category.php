@@ -6,10 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    protected $fillable = ['code', 'title', 'parent_id'];
 
-    protected $fillable = ['code', 'title'];
-
+    public function parent()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
     public function posts(){
-        return $this->hasMany(Post::class);
+        return $this->belongsToMany(Post::class);
     }
 }

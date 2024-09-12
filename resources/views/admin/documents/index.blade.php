@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Библиотека')
+@section('title', 'Документы')
 
 @section('content')
 
@@ -19,16 +19,15 @@
                     @endif
                     <div class="row">
                         <div class="col-md-7">
-                            <h1>Библиотека</h1>
+                            <h1>Документы</h1>
                         </div>
                         <div class="col-md-5">
-                            <a href="{{ route('admin-posts.create') }}" class="btn btn-success">Добавить</a>
+                            <a href="{{ route('admin-documents.create') }}" class="btn btn-success">Добавить</a>
                         </div>
                     </div>
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Изображение</th>
                             <th>Название</th>
                             <th>Категория</th>
                             <th>Автор</th>
@@ -37,12 +36,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($posts as $post)
+                        @foreach($documents as $document)
                             <tr>
-                                <td><img src="{{ Storage::url($post->image) }}" alt=""></td>
-                                <td>{{ $post->title }}</td>
+                                <td>{{ $document->title }}</td>
                                 <td>
-                                    @foreach($post->categories as $category)
+                                    @foreach($document->categories as $category)
                                         @if($loop->last)
                                             {{ $category->title }}
                                         @else
@@ -50,19 +48,19 @@
                                         @endif
                                     @endforeach
                                 </td>
-                                <td>{{ $post->user->name ?? 'Администратор'}}</td>
+                                <td>{{ $document->user->name ?? 'Администратор'}}</td>
                                 <td>
-                                    @if($post->status == 1)
+                                    @if($document->status == 1)
                                         Включен
                                     @else
                                         Отключен
                                     @endif
                                 </td>
                                 <td>
-                                    <form action="{{ route('admin-posts.destroy', $post) }}" method="post">
-                                        <a href="{{ route('admin-posts.show', $post) }}" class="btn
+                                    <form action="{{ route('admin-documents.destroy', $document) }}" method="post">
+                                        <a href="{{ route('admin-documents.show', $document) }}" class="btn
                                         btn-primary">Открыть</a>
-                                        <a class="btn btn-warning" href="{{ route('admin-posts.edit', $post)
+                                        <a class="btn btn-warning" href="{{ route('admin-documents.edit', $document)
                                             }}">Редактировать</a>
                                         @csrf
                                         @method('DELETE')
@@ -75,16 +73,10 @@
                         @endforeach
                         </tbody>
                     </table>
-                    {{ $posts->links('pagination::bootstrap-4') }}
+                    {{ $documents->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
 
 @endsection
-
-<style>
-    .admin table img {
-        max-width: 100px !important;
-    }
-</style>

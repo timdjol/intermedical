@@ -10,7 +10,15 @@
                 <div class="col-md-3">
                     @include('admin.layouts.sidebar')
                     <img src="{{ Storage::url($agent_post->image) }}" alt="">
-                    <h4>{{ $agent_post->category->title }}</h4>
+                    <h4>
+                        @foreach($agent_post->categories as $category)
+                            @if($loop->last)
+                                {{ $category->title }}
+                            @else
+                                {{ $category->title }},
+                            @endif
+                        @endforeach
+                    </h4>
                 </div>
                 <div class="col-md-9">
                     <h1>{{ $agent_post->title }}</h1>

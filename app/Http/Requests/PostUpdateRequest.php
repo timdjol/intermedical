@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostRequest extends FormRequest
+class PostUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +23,12 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required|unique:posts|min:3|max:255',
+            'title' => 'required|exists:App\Models\Post,title|min:3|max:255',
             'description' => 'required|min:5',
             'categories_id' => 'required', 'array', 'min:1',
             'categories_id.*' => 'required', 'integer', 'exists:categories,id',
-            'image' => 'required|image|max:2048|mimes:jpg,jpeg,png,webp,gif,svg',
-            //'image.*' => 'required|image|mimes:jpg,jpeg,png,webp', 'exists:images, id',
-            //'code' => 'unique'
+            'image' => 'image|max:2048|mimes:jpg,jpeg,png,webp,gif,svg',
         ];
-//        if($this->route()->named('products.update')){
-//            $rules['code'] .= ',' . $this->route()->parameter('product')->id;
-//        }
         return $rules;
     }
 
@@ -45,7 +40,6 @@ class PostRequest extends FormRequest
             'mimes' => 'Изображение должно быть формата jpeg,png,jpg,gif,svg,webp',
             'max' => 'Размер изображения не должно превышать 2Мб',
             'image' => 'Загрузите изображение',
-            'unique' => 'Поле :attribute должно быть уникальным'
         ];
     }
 }

@@ -28,16 +28,17 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Название</th>
+                            <th>Родительская категория</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($categories as $category)
                             <tr>
-                                <td>{{ $category->id }}</td>
                                 <td>{{ $category->title }}</td>
+                                <td>{{ $category->parent->title ?? '' }}</td>
+
                                 <td>
                                     <form action="{{ route('admin-categories.destroy', $category) }}" method="post">
                                         <a class="btn btn-warning" href="{{ route('admin-categories.edit', $category)
