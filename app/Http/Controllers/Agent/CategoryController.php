@@ -29,5 +29,4 @@ class CategoryController extends Controller
         return view('agent.categories.show', compact('category', 'cats'));
     }
 
-
 }

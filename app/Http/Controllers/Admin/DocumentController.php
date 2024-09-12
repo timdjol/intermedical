@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\documentRequest;
+use App\Http\Requests\DocumentRequest;
 use App\Http\Requests\DocumentUpdateRequest;
 use App\Models\Category;
 use App\Models\Document;

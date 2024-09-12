@@ -24,7 +24,9 @@
                             @php
                                 $document = \App\Models\Document::where('id', $cat->document_id)->first();
                             @endphp
-                           <li><a href=" {{ Storage::url($document->path) }}" target="_blank"><img src="{{ route('index')
+                           <li><a href="{{ route('agent-documents.show', $document) }}"><img src="{{
+                           route
+                           ('index')
                            }}/img/file.svg" alt=""> {{ $document->title }}</a></li>
                         @endforeach
                     </ul>
