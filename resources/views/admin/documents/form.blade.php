@@ -79,6 +79,23 @@
                             <input type="file" name="path">
                         </div>
                         <div class="form-group">
+                            <label for="">Доступ к скачиванию</label>
+                            <select name="access" id="">
+                                @isset($admin_document)
+                                    @if($admin_document->access == 1)
+                                        <option value="{{ $admin_document->access }}">Доступен</option>
+                                        <option value="0">Недоступен</option>
+                                    @else
+                                        <option value="{{ $admin_document->access }}">Недоступен</option>
+                                        <option value="1">Доступен</option>
+                                    @endif
+                                @else
+                                    <option value="1">Доступен</option>
+                                    <option value="0">Недоступен</option>
+                                @endisset
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="">Статус</label>
                             <select name="status" id="">
                                 @isset($admin_document)
@@ -99,11 +116,11 @@
                         <button class="btn btn-primary">Отправить</button>
                         <a href="{{ url()->previous() }}" class="btn btn-danger">Отмена</a>
                     </form>
-                        @isset($admin_document)
-                            <iframe src="{{ Storage::url($admin_document->path) }}"
-                                    width="100%"
-                                    height="500px">
-                        @endisset
+                    @isset($admin_document)
+                        <iframe src="{{ Storage::url($admin_document->path) }}"
+                                width="100%"
+                                height="500px">
+                    @endisset
                 </div>
             </div>
         </div>

@@ -31,6 +31,7 @@
                             <th>Название</th>
                             <th>Категория</th>
                             <th>Автор</th>
+                            <th>Доступ к скачиванию</th>
                             <th>Статус</th>
                             <th>Действия</th>
                         </tr>
@@ -50,10 +51,19 @@
                                 </td>
                                 <td>{{ $document->user->name ?? 'Администратор'}}</td>
                                 <td>
-                                    @if($document->status == 1)
-                                        Включен
+                                    @if($document->access == 1)
+                                        <div class="alert alert-success">Доступен</div>
                                     @else
-                                        Отключен
+                                        <div class="alert alert-danger">Недоступен</div>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($document->status == 1)
+                                        <div class="alert alert-success">
+                                            Включен
+                                        </div>
+                                    @else
+                                        <div class="alert alert-danger">Отключен</div>
                                     @endif
                                 </td>
                                 <td>

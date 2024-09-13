@@ -12,10 +12,12 @@
                 </div>
                 <div class="col-md-9">
                     <h1>{{ $agent_document->title }}</h1>
-                    <iframe src="{{ Storage::url($agent_document->path) }}" frameborder="0" width="100%"
+                    <iframe src="{{ Storage::url($agent_document->path) }}#toolbar=0" frameborder="0" width="100%"
                             height="600px"></iframe>
-                    <a target="_blank" href="{{ Storage::url($agent_document->path) }}" class="btn btn-success">Скачать
-                        документ</a>
+                    @if($agent_document->access === 1)
+                        <a target="_blank" href="{{ Storage::url($agent_document->path) }}" class="btn btn-success">Скачать
+                            документ</a>
+                    @endif
                 </div>
             </div>
         </div>

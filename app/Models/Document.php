@@ -12,6 +12,7 @@ class Document extends Model
         'title',
         'user_id',
         'path',
+        'access',
         'status'
     ];
 
